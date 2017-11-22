@@ -1,0 +1,55 @@
+FUNCTION_BLOCK submarine
+
+VAR_INPUT				
+	IN_distance : REAL;
+	IN_falling_speed : REAL;
+END_VAR
+
+VAR_OUTPUT				
+	OUT_ballast_dropping : REAL;
+END_VAR
+
+FUZZIFY IN_distance
+	TERM level_0 := (0, 1) (10, 1) (25, 0) ;
+	TERM level_1 := (20, 0) (25,1) (50, 0);
+	TERM level_2 := (40, 0)(55, 1)(70, 1) (90, 0);
+	TERM level_3 := (80, 0) (95, 1) (110, 1) (120, 0);
+	TERM level_4 := (115, 0) (125, 1) (175, 1) (185, 0);
+	TERM level_5 := (170, 0)(190, 1)(195, 1)(215, 0);
+    TERM level_6 := (200, 0) (225, 1) (245, 1) (260, 0);
+	TERM level_7 := (250, 0) (300, 1);
+END_FUZZIFY
+
+
+FUZZIFY IN_falling_speed
+	TERM gear_1 := (0, 1) (1, 1) (2,0) ;
+	TERM gear_2 := (1,0) (3,1) (5, 0);
+	TERM gear_3 := (3, 0) (5, 1) (7, 0);
+	TERM gear_4 := (5, 0) (7, 1) (9, 0);
+	Term gear_5 := (8, 0) (10, 1);
+END_FUZZIFY
+
+
+DEFUZZIFY OUT_ballast_dropping
+	TERM val_0 := (0, 1) (20, 0);
+	TERM val_20 := (5, 0) (20, 1) (35, 0);
+	TERM val_40 := (25, 0) (40, 1) (55, 0);
+	TERM val_60 := (45, 0 )(60, 1) (75, 0 );
+	TERM val_80 := (65, 0)(80, 1)(95, 0);
+	TERM val_100 := (80, 0)(100, 1) (100, 0);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+// Inference rules
+RULEBLOCK No1
+	AND : MIN;	// Use 'min' for 'and'
+	ACT : MIN;	// Use 'min' activation method
+	ACCU : MAX;	// Use 'max' accumulation method
+
+//	RULE 1 : IF distance IS poor OR falling_speed  IS rancid THEN OUT_ballast_dropping IS cheap;
+//	RULE 2 : IF distance IS good THEN tip IS average;
+//	RULE 3 : IF distance IS excellent AND falling_speed  IS delicious THEN OUT_ballast_dropping IS generous;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

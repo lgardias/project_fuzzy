@@ -1,13 +1,13 @@
-package com.lgardias.controller.;
+package com.lgardias.controller;
 
-import Model.FISModel;
+import com.lgardias.model.FISModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -20,6 +20,8 @@ public class MainPaneController implements Initializable {
     private String outSring = new String("");
 
     private Pattern validEditingState = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+    private Boolean trueDistance = false;
+    private Boolean trueSpeed = false;
 
     @FXML
     private TextField distanceTextField;
@@ -73,16 +75,24 @@ public class MainPaneController implements Initializable {
     }
 
     private void configureEvaluateButton() {
+        infoLabel.setText("");
         evaluateButton.setOnAction(event -> {
-            fisModel.getFis().evaluate();
-            outputTextArea.setText(outSring + fisModel.distanceMembership() + fisModel.speedMembership() +
-                    fisModel.balastMembership() + fisModel.getResult());
+            if(trueSpeed && trueDistance){
+                fisModel.getFis().evaluate();
+                outputTextArea.setText(outSring + fisModel.distanceMembership() + fisModel.speedMembership() +
+                        fisModel.balastMembership() + fisModel.getResult());
+            }else {
+                infoLabel.setText("Wprowadż poprawne dane");
+            }
         });
     }
 
     private void configureAddButton() {
 
         addButton.setOnAction(event -> {
+            infoLabel.setText("");
+            trueDistance = false;
+            trueSpeed = false;
             String value = distanceTextField.getText();
             String value2 = speedTextField.getText();
             outputTextArea.setText(distanceTextField.getText());
@@ -90,6 +100,7 @@ public class MainPaneController implements Initializable {
                 fisModel.setDistance(Double.valueOf(value));
                 outSring += "Zadana wartość :: Głębokość zanurzenia = " + value + "\n";
                 outputTextArea.setText(outSring);
+                trueDistance = true;
             } else {
                 outSring += "GŁĘBOKOŚĆ ZANURZENIA musi zawierać się w przedziale 0.0 - 300.0" + "\n";
                 outputTextArea.setText(outSring);
@@ -101,6 +112,7 @@ public class MainPaneController implements Initializable {
                 fisModel.setSpeed(Double.valueOf(value2));
                 outSring += "Zadana wartość :: Prędkość zanurzania = " + value2 + "\n";
                 outputTextArea.setText(outSring);
+                trueSpeed = true;
             } else {
                 outSring += "PRĘDKOŚĆ ZANURZENIA musi zawierać się w przedziale 0.0 - 10.0" + "\n";
                 outputTextArea.setText(outSring);
@@ -114,6 +126,7 @@ public class MainPaneController implements Initializable {
 
     private void configureChartButton() {
         chartButton.setOnAction(event -> {
+            infoLabel.setText("");
             fisModel.createDialogFis();
         });
     }
@@ -125,9 +138,11 @@ public class MainPaneController implements Initializable {
     }
 
     private void configureInfoButton() throws FileNotFoundException {
-        File file = new File("res/info.txt");
-        Scanner in = new Scanner(file);
+        InputStream inputStream = MainPaneController.class.getClassLoader().getResourceAsStream("info/info.txt");
+        Scanner in = new Scanner(inputStream);
+
         infoButton.setOnAction(event -> {
+            infoLabel.setText("");
             String info = new String("");
             while (in.hasNext()) {
                 info = info + in.nextLine() + "\n";

@@ -1,5 +1,14 @@
-to jest przykłaowy text
-to jest przykłaowy text
-to jest przykłaowy text
-to jest przykłaowy text
-to jest przykłaowy text 
+"Sterowanie opadaniem łodzi podwodnej"
+
+Sterownik na podstawie wprowadzonych danych
+oblicza poziom napełnienia zbiorników balastowych łodzi.
+
+Dane wejściowe:
+Głębokośc zanurzenia : range    0.0 - 300.0
+Szybkość opadania : range       0.0 - 10.0
+
+Dane wyjściowe:
+Stopień zapełnienia zbiorników balastowych :    range 0% - 100%
+
+Łukasz Gardiasz
+
