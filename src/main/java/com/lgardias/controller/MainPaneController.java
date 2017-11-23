@@ -133,7 +133,8 @@ public class MainPaneController implements Initializable {
 
     private void configureExitButton() {
         exitButton.setOnAction(event -> {
-            System.exit(0);
+           System.exit(0);
+
         });
     }
 

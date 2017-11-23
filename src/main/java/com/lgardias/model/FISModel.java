@@ -3,15 +3,21 @@ package com.lgardias.model;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.plot.JDialogFis;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
+import net.sourceforge.jFuzzyLogic.rule.Variable;
 
 public class FISModel {
     private FIS fis;
     private JDialogFis dialogFis;
+    private JFuzzyChart chart;
 
     public FISModel() {
         fis = FIS.load(FISModel.class.getClassLoader().getResourceAsStream("fcl_file/submarine.fcl"), true);
     }
 
+    public void showChart(){
+
+        JFuzzyChart.get().chart(fis);
+    }
     public void createDialogFis() {
         dialogFis = new JDialogFis(fis);
     }
