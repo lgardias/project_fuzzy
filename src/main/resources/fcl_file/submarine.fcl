@@ -1,0 +1,101 @@
+FUNCTION_BLOCK submarine
+
+VAR_INPUT				
+	IN_distance :               REAL; RANGE := (0.0 .. 300.0);
+	IN_falling_speed :          REAL; RANGE := (0.0 .. 10.0);
+END_VAR
+
+VAR_OUTPUT				
+	OUT_ballast_dropping :      REAL; RANGE := (0.0 .. 100.0);
+END_VAR
+
+FUZZIFY IN_distance
+	TERM level_0 := sigm -1 10;
+	TERM level_1 := gbell 16 3 28;
+	TERM level_2 := gbell 16 3 65;
+	TERM level_3 := gbell 18 3 108;
+	TERM level_4 := gbell 20 3 150;
+	TERM level_5 := gbell 16 3 190;
+    TERM level_6 := gbell 20 3 240;
+	TERM level_7 := sigm 0.3 275;
+END_FUZZIFY
+
+
+FUZZIFY IN_falling_speed
+	TERM gear_1 := sigm -4 1;
+	TERM gear_2 := gauss 3 1;
+	TERM gear_3 := gauss 5 1;
+	TERM gear_4 := gauss 7 1;
+	Term gear_5 := sigm 4 9;
+END_FUZZIFY
+
+
+DEFUZZIFY OUT_ballast_dropping
+	TERM val_0 := sigm -1.5 7.5;
+	TERM val_20 := gauss 20 6.5;
+	TERM val_40 := gauss 40 6.5;
+	TERM val_60 := gauss 60 6.5;
+	TERM val_80 := gauss 80 6.5;
+	TERM val_100 := sigm 1 94;
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+// Inference rules
+RULEBLOCK No1
+	AND : MIN;	// Use 'pro' for 'and'
+	ACT : MIN;	// Use 'min' activation method
+	ACCU : MAX;	// Use 'max' accumulation method
+
+    RULE 1  : IF IN_distance IS level_0 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_0;
+    RULE 2  : IF IN_distance IS level_0 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_0;
+    RULE 3  : IF IN_distance IS level_0 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_0;
+    RULE 4  : IF IN_distance IS level_0 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_0;
+    RULE 5  : IF IN_distance IS level_0 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_0;
+
+    RULE 6  : IF IN_distance IS level_1 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_0;
+    RULE 7  : IF IN_distance IS level_1 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_20;
+    RULE 8  : IF IN_distance IS level_1 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_20;
+    RULE 9  : IF IN_distance IS level_1 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_40;
+    RULE 10 : IF IN_distance IS level_1 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_40;
+
+    RULE 11  : IF IN_distance IS level_2 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_20;
+    RULE 12  : IF IN_distance IS level_2 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_40;
+    RULE 13  : IF IN_distance IS level_2 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_40;
+    RULE 14  : IF IN_distance IS level_2 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_60;
+    RULE 15  : IF IN_distance IS level_2 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_60;
+
+    RULE 16  : IF IN_distance IS level_3 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_20;
+    RULE 17  : IF IN_distance IS level_3 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_40;
+    RULE 18  : IF IN_distance IS level_3 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_60;
+    RULE 19  : IF IN_distance IS level_3 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_60;
+    RULE 20  : IF IN_distance IS level_3 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_60;
+
+    RULE 21  : IF IN_distance IS level_4 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_20;
+    RULE 22  : IF IN_distance IS level_4 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_40;
+    RULE 23  : IF IN_distance IS level_4 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_60;
+    RULE 24  : IF IN_distance IS level_4 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_60;
+    RULE 25  : IF IN_distance IS level_4 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_60;
+
+    RULE 26  : IF IN_distance IS level_5 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_20;
+    RULE 27  : IF IN_distance IS level_5 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_40;
+    RULE 28  : IF IN_distance IS level_5 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_60;
+    RULE 29  : IF IN_distance IS level_5 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_80;
+    RULE 30  : IF IN_distance IS level_5 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_80;
+
+    RULE 31  : IF IN_distance IS level_6 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_20;
+    RULE 32  : IF IN_distance IS level_6 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_40;
+    RULE 33  : IF IN_distance IS level_6 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_60;
+    RULE 34  : IF IN_distance IS level_6 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_80;
+    RULE 35  : IF IN_distance IS level_6 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_100;
+
+    RULE 36  : IF IN_distance IS level_7 AND IN_falling_speed IS gear_1 THEN OUT_ballast_dropping IS val_20;
+    RULE 37  : IF IN_distance IS level_7 AND IN_falling_speed IS gear_2 THEN OUT_ballast_dropping IS val_40;
+    RULE 38  : IF IN_distance IS level_7 AND IN_falling_speed IS gear_3 THEN OUT_ballast_dropping IS val_60;
+    RULE 39  : IF IN_distance IS level_7 AND IN_falling_speed IS gear_4 THEN OUT_ballast_dropping IS val_80;
+    RULE 40  : IF IN_distance IS level_7 AND IN_falling_speed IS gear_5 THEN OUT_ballast_dropping IS val_100;
+
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

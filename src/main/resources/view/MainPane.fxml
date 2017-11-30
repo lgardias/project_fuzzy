@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+           minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lgardias.controller.MainPaneController">
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"
+                    SplitPane.resizableWithParent="false">
+            <children>
+                <VBox alignment="TOP_CENTER" layoutX="25.0" layoutY="68.0" prefHeight="200.0" prefWidth="100.0"
+                      spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Wprowadzanie danych"/>
+                        <Separator prefWidth="200.0"/>
+                        <Label text="Głębokość zanurzenia"/>
+                        <TextField fx:id="distanceTextField" alignment="CENTER" promptText="Podaj dystans"/>
+                        <Label text="Prędkość opadania"/>
+                        <TextField fx:id="speedTextField" alignment="CENTER" promptText="Podaj prędkość"/>
+                        <Button fx:id="addButton" mnemonicParsing="false" text="Wprowadż dane"/>
+                        <Label fx:id="infoLabel" textFill="#fc1313"/>
+                        <Separator prefWidth="200.0"/>
+                        <Button fx:id="evaluateButton" mnemonicParsing="false" text="Oblicz"/>
+                        <Separator prefWidth="200.0"/>
+                        <Button fx:id="chartButton" mnemonicParsing="false" text="Pokaż wykresy"/>
+                        <Button fx:id="infoButton" mnemonicParsing="false" text="Inormacje o projekcie"/>
+                        <Separator prefWidth="200.0"/>
+                        <Button fx:id="exitButton" mnemonicParsing="false" text="Wyjście"/>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"
+                    SplitPane.resizableWithParent="false">
+            <children>
+                <TextArea fx:id="outputTextArea" editable="false" layoutX="88.0" layoutY="49.0" prefHeight="200.0"
+                          prefWidth="200.0"
+                          text="Projekt z Inżynieri Wiedzy i Systemów Ekspertowych.                                 Temat : Zanurzanie łodzi podwodnej."
+                          wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            </children>
+        </AnchorPane>
+    </items>
+</SplitPane>
